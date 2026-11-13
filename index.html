@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <base target="_top" />
+  <title>학생 건의함</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background-color: #f3f6fb;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      padding: 32px 28px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #e0e7ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .optional {
+      font-weight: 400;
+      color: #94a3b8;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #0f172a;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: #f8fafc;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4f46e5;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+      line-height: 1.6;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: #4f46e5;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover {
+      background-color: #4338ca;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .btn-submit:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      display: none;
+      background-color: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-icon {
+      width: 56px;
+      height: 56px;
+      background-color: #dcfce7;
+      color: #16a34a;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .success-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .success-desc {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .btn-reset {
+      background-color: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-reset:hover {
+      background-color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="formSection">
+      <div class="header">
+        <span class="badge">우리들의 목소리</span>
+        <h1>학생 건의함</h1>
+        <p class="subtitle">더 좋은 학교와 교실을 만들기 위한<br>여러분의 소중한 의견을 자유롭게 적어주세요.</p>
+      </div>
+
+      <div id="errorMsg" class="error-msg"></div>
+
+      <form id="suggestionForm">
+        <div class="form-group">
+          <label for="nickname">
+            이름 또는 별명
+            <span class="optional">(비워두면 '익명'으로 등록됩니다)</span>
+          </label>
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            maxlength="30"
+            placeholder="예: 김민준 또는 익명의 다람쥐"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="content">건의 내용</label>
+          <textarea
+            id="content"
+            name="content"
+            maxlength="1000"
+            placeholder="불편한 점이나 바라는 점을 구체적으로 작성해주세요."
+            required
+          ></textarea>
+          <div class="char-count"><span id="charCount">0</span> / 1000자</div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">건의사항 보내기</button>
+      </form>
+    </div>
+
+    <div id="successSection" class="success-box">
+      <div class="success-icon">✓</div>
+      <div class="success-title">소중한 의견이 전달되었습니다!</div>
+      <p class="success-desc">작성해주신 건의 내용은 꼼꼼히 확인하겠습니다.</p>
+      <button type="button" id="resetBtn" class="btn-reset">다른 건의사항 작성하기</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('suggestionForm');
+    const nicknameInput = document.getElementById('nickname');
+    const contentInput = document.getElementById('content');
+    const charCount = document.getElementById('charCount');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const formSection = document.getElementById('formSection');
+    const successSection = document.getElementById('successSection');
+    const resetBtn = document.getElementById('resetBtn');
+
+    contentInput.addEventListener('input', () => {
+      charCount.textContent = contentInput.value.length;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+
+      const content = contentInput.value.trim();
+      if (!content) {
+        showError('건의 내용을 입력해주세요.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '전송 중...';
+
+      const payload = {
+        nickname: nicknameInput.value.trim(),
+        content: content
+      };
+
+      google.script.run
+        .withSuccessHandler(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '건의사항 보내기';
+          formSection.style.display = 'none';
+          successSection.style.display = 'block';
+        })
+        .withFailureHandler((err) => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '건의사항 보내기';
+          showError(err.message || '전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        })
+        .submitSuggestion(payload);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      charCount.textContent = '0';
+      errorMsg.style.display = 'none';
+      successSection.style.display = 'none';
+      formSection.style.display = 'block';
+    });
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
